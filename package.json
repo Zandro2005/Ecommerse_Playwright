@@ -1,0 +1,32 @@
+{
+  "name": "ecommerce-playwright",
+  "version": "1.0.0",
+  "description": "Playwright E2E automation suite for SauceDemo (Project 1 of QA portfolio)",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:chromium": "playwright test --project=chromium",
+    "test:auth": "playwright test tests/LoginPage.spec.ts",
+    "test:products": "playwright test tests/ProductsPage.spec.ts",
+    "test:cart": "playwright test tests/CartPage.spec.ts",
+    "test:checkout": "playwright test tests/CheckoutPage.spec.ts",
+    "test:regression": "playwright test tests/Full_End_To_End.spec.ts",
+    "report": "playwright show-report",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write .",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "@types/node": "^20.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.71.0",
+    "@typescript-eslint/parser": "^8.71.0",
+    "dotenv": "^17.4.2",
+    "eslint": "^8.57.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "typescript": "^5.5.0"
+  }
+}
