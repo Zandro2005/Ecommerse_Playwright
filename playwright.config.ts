@@ -16,6 +16,7 @@ export default defineConfig({
     ['html', { open: 'on-failure' }],
     ['list'],
     ['json', { outputFile: 'test-results/results.json' }],
+    ['allure-playwright', { outputFolder: 'allure-results' }],
   ],
 
   use: {
