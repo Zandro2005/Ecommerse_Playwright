@@ -13,7 +13,7 @@ jobs:
     env:
       TEST_USERNAME: standard_user
       TEST_PASSWORD: secret_sauce
-    steps:
+    steps:        
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
@@ -25,6 +25,11 @@ jobs:
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
+
+      - name: Azure Login
+        uses: azure/login@v3
+        with: 
+          creds: $({secrets.AZURE_CREDENTIALS})
 
       - name: Run Playwright tests
         run: npx playwright test tests/LoginPage.spec.ts --config=playwright.service.config.ts --workers=4 
