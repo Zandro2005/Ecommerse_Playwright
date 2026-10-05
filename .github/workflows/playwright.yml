@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -31,8 +32,10 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Run Playwright tests
-        run: npm test
+      - name: Run Playwright tests on Azure
+        env:
+          PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_URL }}
+        run: npx playwright test --config=playwright.service.config.ts --workers=4
 
       - name: Upload Playwright report
         if: always()
