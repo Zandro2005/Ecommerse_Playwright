@@ -12,11 +12,11 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     env:
-      TEST_USERNAME: standard_user
-      TEST_PASSWORD: secret_sauce
-      TEST_FIRSTNAME: Zandro
-      TEST_LASTNAME: Guinialope
-      TEST_POSTALCODE: 1860
+      TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+      TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+      TEST_FIRSTNAME: ${{ secrets.TEST_FIRSTNAME }}
+      TEST_LASTNAME: ${{ secrets.TEST_LASTNAME }}
+      TEST_POSTALCODE: ${{ secrets.TEST_POSTALCODE }}
     steps:
       - uses: actions/checkout@v4
 

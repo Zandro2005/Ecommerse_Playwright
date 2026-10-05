@@ -35,19 +35,25 @@ test('Product name matches details page', async ({ productsPage }) => {
   const listProductName = await productsPage.productDetailLink.innerText();
 
   await productsPage.clickProductDetails();
+  await expect(productsPage.page).toHaveURL(productsPage.productDetailsUrl);
 
-  await expect(productsPage.productsName).toHaveText(listProductName);
+  const detailsTitle = productsPage.page.locator('[data-test="inventory-item-name"]');
+  await expect(detailsTitle).toHaveText(listProductName);
 });
 
 test('Product price matches details page', async ({ productsPage }) => {
   const listProductPrice = await productsPage.productsPrice.first().innerText();
 
   await productsPage.clickProductDetails();
+  await expect(productsPage.page).toHaveURL(productsPage.productDetailsUrl);
 
-  await expect(productsPage.productsPrice).toHaveText(listProductPrice);
+  const detailsPrice = productsPage.page.locator('[data-test="inventory-item-price"]');
+  await expect(detailsPrice).toHaveText(listProductPrice);
 });
 
 test('Product description visible', async ({ productsPage }) => {
+  await expect(productsPage.products.first()).toBeVisible();
+
   const cards = await productsPage.products.all();
   await expect(cards.length).toBeGreaterThan(0);
 
@@ -55,7 +61,7 @@ test('Product description visible', async ({ productsPage }) => {
     const card = cards[i];
 
     await expect(card).toBeVisible();
-    await expect(productsPage.productsDesc.nth(i)).toBeVisible();
+    await expect(card.locator('[data-test="inventory-item-desc"]')).toBeVisible();
   }
 });
 
