@@ -18,8 +18,11 @@ export const test = base.extend<{
   loginPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
 
+    const username = process.env.TEST_USERNAME || 'standard_user';
+    const password = process.env.TEST_PASSWORD || 'secret_sauce';
+
     await loginPage.navigate();
-    await loginPage.validLogin(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
+    await loginPage.validLogin(username, password);
 
     await use(loginPage);
   },

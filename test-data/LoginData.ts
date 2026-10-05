@@ -1,8 +1,8 @@
 export const validLoginCases = [
   {
     name: 'standard user',
-    username: process.env.TEST_USERNAME!,
-    password: process.env.TEST_PASSWORD!,
+    username: process.env.TEST_USERNAME || 'standard_user',
+    password: process.env.TEST_PASSWORD || 'secret_sauce',
   },
 ];
 
