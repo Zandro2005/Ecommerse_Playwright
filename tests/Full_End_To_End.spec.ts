@@ -20,7 +20,7 @@ test('Full happy path purchase', async ({ checkoutStepTwoWithProduct }) => {
 test('Cannot check out with empty cart', async ({ productsPage }) => {
   await productsPage.clickCartLink();
   await productsPage.clickCheckoutBtn();
-  await expect(productsPage.page).toHaveURL(productsPage.cartUrl);
+  await expect(productsPage.page).toHaveURL(/.*checkout-step-one\.html/);
 });
 
 test('Logout mid-shopping ends session correctly', async ({ productsPage, loginPage }) => {
