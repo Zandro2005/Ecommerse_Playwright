@@ -81,3 +81,5 @@ test('Proceed to checkout from cart', async ({ cartWithProduct }) => {
   await cartWithProduct.clickcheckout();
   await expect(cartWithProduct.page).toHaveURL(cartWithProduct.checkoutUrl);
 });
+
+//zandro
