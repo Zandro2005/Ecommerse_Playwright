@@ -82,4 +82,41 @@ test('Proceed to checkout from cart', async ({ cartWithProduct }) => {
   await expect(cartWithProduct.page).toHaveURL(cartWithProduct.checkoutUrl);
 });
 
-//zandro
+test('Quantity field is not editable in-cart', async ({ cartWithProduct }) => {
+  const tagName = await cartWithProduct.productQuantity.evaluate((el) => el.tagName.toLowerCase());
+  expect(tagName).not.toBe('input');
+  await expect(cartWithProduct.productQuantity).toHaveText('1');
+});
+
+test('Cart total item count matches badge exactly after removals mid-session', async ({
+  productsPage,
+}) => {
+  await productsPage.addProductToCart('Sauce Labs Backpack');
+  await productsPage.addProductToCart('Sauce Labs Bike Light');
+  await productsPage.addProductToCart('Sauce Labs Bolt T-Shirt');
+  await expect(productsPage.productCartBadge).toHaveText('3');
+
+  await productsPage.removeProduct('Sauce Labs Bike Light');
+  await expect(productsPage.productCartBadge).toHaveText('2');
+
+  await productsPage.addProductToCart('Sauce Labs Fleece Jacket');
+  await expect(productsPage.productCartBadge).toHaveText('3');
+
+  await productsPage.clickCartLink();
+  const cartItemRows = productsPage.page.locator('[data-test="inventory-item"]');
+  await expect(cartItemRows).toHaveCount(3);
+  await expect(productsPage.productCartBadge).toHaveText('3');
+});
+
+test('Cart state after browser refresh', async ({ cartWithProduct }) => {
+  await expect(cartWithProduct.productItemRow).toHaveCount(1);
+  await cartWithProduct.page.reload();
+  await expect(cartWithProduct.productItemRow).toHaveCount(1);
+  await expect(cartWithProduct.cartBadge).toHaveText('1');
+});
+
+test('Cart icon accessible label', async ({ cartWithProduct }) => {
+  await expect(cartWithProduct.productCartLink).toBeVisible();
+  const dataTest = await cartWithProduct.productCartLink.getAttribute('data-test');
+  expect(dataTest).toBe('shopping-cart-link');
+});

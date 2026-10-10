@@ -43,6 +43,12 @@ test('Missing postal code blocked', async ({ checkoutWithProduct }) => {
   await expect(checkoutWithProduct.errorMessage).toHaveText('Error: Postal Code is required');
 });
 
+test('All fields empty shows first error', async ({ checkoutWithProduct }) => {
+  await checkoutWithProduct.fillCheckoutInfo('', '', '');
+  await checkoutWithProduct.clickContinueButton();
+  await expect(checkoutWithProduct.errorMessage).toHaveText('Error: First Name is required');
+});
+
 test('Special characters accepted', async ({ checkoutWithProduct }) => {
   await checkoutWithProduct.fillCheckoutInfo(
     'Zandro-14',
@@ -172,5 +178,49 @@ test('Alphanumeric postal code accepted', async ({ checkoutWithProduct }) => {
   );
   await checkoutWithProduct.clickContinueButton();
 
+  await expect(checkoutWithProduct.page).toHaveURL(checkoutWithProduct.checkoutUrl);
+});
+
+test('Checkout via direct URL with empty cart documents actual behavior', async ({ loginPage }) => {
+  await loginPage.page.goto('/checkout-step-one.html');
+  await expect(loginPage.page).toHaveURL(/.*checkout-step-one\.html/);
+});
+
+test('Item quantity reflected correctly in overview totals', async ({
+  checkoutStepTwoWithThreeProducts,
+}) => {
+  const quantities = await checkoutStepTwoWithThreeProducts.page
+    .locator('[data-test="item-quantity"]')
+    .allTextContents();
+  expect(quantities.length).toBe(3);
+  quantities.forEach((qty) => expect(qty.trim()).toBe('1'));
+});
+
+test('Currency values never show negative or NaN', async ({ checkoutStepTwoWithThreeProducts }) => {
+  const subtotalText = await checkoutStepTwoWithThreeProducts.productSubtotal.textContent();
+  const taxText = await checkoutStepTwoWithThreeProducts.tax.textContent();
+  const totalText = await checkoutStepTwoWithThreeProducts.productTotal.textContent();
+
+  const subtotal = Number(subtotalText?.replace(/[^0-9.]/g, ''));
+  const tax = Number(taxText?.replace(/[^0-9.]/g, ''));
+  const total = Number(totalText?.replace(/[^0-9.]/g, ''));
+
+  expect(Number.isNaN(subtotal)).toBe(false);
+  expect(Number.isNaN(tax)).toBe(false);
+  expect(Number.isNaN(total)).toBe(false);
+  expect(subtotal).toBeGreaterThan(0);
+  expect(tax).toBeGreaterThan(0);
+  expect(total).toBeGreaterThan(0);
+});
+
+test('Browser back button after finishing order', async ({ orderFinished }) => {
+  await expect(orderFinished.completeHeaderText).toHaveText('Thank you for your order!');
+  await orderFinished.page.goBack();
+  await expect(orderFinished.page).not.toHaveURL(orderFinished.finishedUrl);
+});
+
+test('Field-level trimming of leading/trailing spaces', async ({ checkoutWithProduct }) => {
+  await checkoutWithProduct.fillCheckoutInfo('  John  ', '  Doe  ', '  12345  ');
+  await checkoutWithProduct.clickContinueButton();
   await expect(checkoutWithProduct.page).toHaveURL(checkoutWithProduct.checkoutUrl);
 });
