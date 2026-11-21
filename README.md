@@ -6,6 +6,7 @@
 ![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=nodedotjs&logoColor=white)
 ![Azure Playwright](https://img.shields.io/badge/Cloud-Azure_Playwright-0078D4?logo=microsoftazure&logoColor=white)
 ![Allure Report](https://img.shields.io/badge/Report-Allure_&_HTML-FF6C37)
+![GitHub Issues](https://img.shields.io/badge/Documented_Defects-2_Issues-D73A4A?logo=github)
 
 End-to-End (E2E) test automation suite for [SauceDemo](https://www.saucedemo.com) built with **Playwright** and **TypeScript** (**Project 1** of a 3-part QA Engineering portfolio: _UI Fundamentals → API+UI Hybrid → Advanced CI/CD_).
 
@@ -31,6 +32,15 @@ Full traceability for all **87 test cases** is documented in [`test-case-list.md
 | **End-to-End & Regression** | `tests/Full_End_To_End.spec.ts` |   6   | Full happy-path purchase, session termination, `problem_user` UI defect verification, cross-browser smoke   |
 
 **Test Personas** (Password: `secret_sauce`): `standard_user` (happy path) · `locked_out_user` (auth lock) · `problem_user` (UI defects) · `performance_glitch_user` (latency resilience)
+
+## Documented Defects (GitHub Issues)
+
+Defects verified by the automated regression suite are formally logged in the repository's **Issues** tab:
+
+| Issue | Defect Summary | Spec Reference |
+| :--- | :--- | :--- |
+| [#2](https://github.com/Zandro2005/Ecommerse_Playwright/issues/2) | Wrong and broken product images (`/sl-404`) shown when logged in as `problem_user` | `tests/Full_End_To_End.spec.ts` (`TC-E2E-005`), `tests/LoginPage.spec.ts` (`TC-AUTH-011`) |
+| [#3](https://github.com/Zandro2005/Ecommerse_Playwright/issues/3) | Slow login loading delay for `performance_glitch_user` | `tests/LoginPage.spec.ts` (`TC-AUTH-012`) |
 
 ## Project Structure
 
